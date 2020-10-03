@@ -51,7 +51,7 @@ struct {
     unsigned char y;//acceleration
     unsigned char sprnum;
     unsigned char movement;
-}bodies[3];
+}bodies[MAX_ENEMIES];
 
 
 unsigned char temp1;
@@ -75,7 +75,7 @@ unsigned char BILL;
 
 unsigned char TAM;//temp variable
 
-struct Enemy enemy_locations[128]; // up to 128 enemies per level, 8 bytes per enemy: 1K
+//struct Enemy enemy_locations[128]; // up to 128 enemies per level, 8 bytes per enemy: 1K
 //	struct Enemy *enemy_locations = 0xF800; // up to 256 enemies per level, 8 bytes per enemy: 2K, WARNING: this is placed in RAM 4
 //struct Enemy enemy_locations[128]; // up to 128 enemies per level, 8 bytes per enemy: 1K
 
@@ -223,8 +223,10 @@ void fillEnemyLocationsArray (void)
 	extern unsigned int LEVEL_1_ENEMIES_LOCATIONS;
 	
 	SUE = &LEVEL_1_ENEMIES_LOCATIONS;//address of pointer
+	
+	//MAX_ENEMIES
 
-	for (temp1 = 0; temp1 < 3; temp1 ++)// 3 = number of baddes
+	for (temp1 = 0; temp1 < 10; temp1 ++)// 3 = number of baddes
 	{
 		bodies[temp1].x = z80_bpeek(SUE);//value of pointer
 		SUE ++;
@@ -236,7 +238,9 @@ void fillEnemyLocationsArray (void)
 		SUE ++;
 		bodies[temp1].movement = z80_bpeek(SUE);//value of pointer
 		SUE ++;		
-	}	
+	}
+
+	
 }
 
 
@@ -245,7 +249,7 @@ void printEnemyArray()
 	printf("Entity_structure Struct Members\n");
 	
 	
-	for (temp1 = 0; temp1 < 3; temp1 ++)// 3 = number of baddes
+	for (temp1 = 0; temp1 < MAX_ENEMIES; temp1 ++)// 3 = number of baddes
 	{
 		printf("%d\n", bodies[temp1].x);
 		printf("%d\n", bodies[temp1].x_desp);
@@ -254,6 +258,7 @@ void printEnemyArray()
 		printf("%d\n", bodies[temp1].movement);
 		printf("-----------\n");
 	}
+	
 	
 	printf("\nPress any key\n");
 }
@@ -264,9 +269,9 @@ void main (void)
 	
 	while (1)
 	{
-	
 		zx_cls(INK_BLACK | PAPER_WHITE);
 		puts("\x16\x01\x02");
+		
 		//		\x16 == set cursor position
 		//		\x01 = x position (01) in hex
 		//		\x02 = y position (0C) in hex
@@ -291,13 +296,10 @@ void main (void)
 		pointerPrintL1 ();		
 		pauseWipe();
 		
+		//look at enemy_locations[]
 		fillEnemyLocationsArray ();
 		printEnemyArray();
-		pauseWipe();
-		
-		//look at enemy_locations[]
-		
-		
+		pauseWipe();		
 	}
 	
 }
