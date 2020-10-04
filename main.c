@@ -134,7 +134,7 @@ void setVariables()
 	BOB = 0;
 }
 
-void pointerPrintL1 ()
+void printPointerAddress()
 {
 	extern unsigned int LEVEL_1_ENEMIES_LOCATIONS;
 		
@@ -179,7 +179,6 @@ void printEnemy_structure()
 	printf("\nPress a key\n");
 }
 
-
 void set_Entity_structure ()
 {
 	// Access array members
@@ -210,9 +209,6 @@ void set_Enemy_structure()
 void pauseWipe (void)
 {
 	in_wait_key();
-	//keypress = n_wait_key();
-	//keypress = in_WaitForKey();
-	//in_Inkey();
 	in_pause(100);
 	zx_cls(INK_BLACK | PAPER_WHITE);
 	puts("\x16\x01\x02");
@@ -223,8 +219,6 @@ void fillEnemyLocationsArray (void)
 	extern unsigned int LEVEL_1_ENEMIES_LOCATIONS;
 	
 	SUE = &LEVEL_1_ENEMIES_LOCATIONS;//address of pointer
-	
-	//MAX_ENEMIES
 
 	for (temp1 = 0; temp1 < 10; temp1 ++)// 3 = number of baddes
 	{
@@ -238,17 +232,13 @@ void fillEnemyLocationsArray (void)
 		SUE ++;
 		bodies[temp1].movement = z80_bpeek(SUE);//value of pointer
 		SUE ++;		
-	}
-
-	
+	}	
 }
 
 
 void printEnemyArray()
 {
 	printf("Entity_structure Struct Members\n");
-	
-	
 	for (temp1 = 0; temp1 < MAX_ENEMIES; temp1 ++)// 3 = number of baddes
 	{
 		printf("%d\n", bodies[temp1].x);
@@ -258,8 +248,6 @@ void printEnemyArray()
 		printf("%d\n", bodies[temp1].movement);
 		printf("-----------\n");
 	}
-	
-	
 	printf("\nPress any key\n");
 }
 
@@ -293,7 +281,7 @@ void main (void)
 		pauseWipe();
 		
 		
-		pointerPrintL1 ();		
+		printPointerAddress();		//printPointerAddress();
 		pauseWipe();
 		
 		//look at enemy_locations[]
